@@ -1,1 +1,4 @@
 .idea
+api/.idea
+frontend/.idea
+provisioning/hosts.yml

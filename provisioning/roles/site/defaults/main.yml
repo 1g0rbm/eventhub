@@ -1,0 +1,4 @@
+certbot_email: m1g0rb89@gmail.com
+certbot_hosts:
+    - eventhub.1g0rbm.com
+    - api.eventhub.1g0rbm.com
