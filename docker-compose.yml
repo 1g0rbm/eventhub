@@ -1,14 +1,12 @@
 version: "3.7"
 services:
     gateway:
-        image: ${REGISTRY}/auction-gateway:${IMAGE_TAG}
-        restart: always
-        volumes:
-            - /etc/letsencrypt:/etc/letsencrypt:ro
-            - /var/www/html:/var/www/html:ro
+        build:
+            context: gateway/docker
+            dockerfile: development/nginx/Dockerfile
         ports:
-            - "80:80"
-            - "443:443"
+            - "8080:8080"
+            - "8081:8081"
         depends_on:
             - frontend
             - api
