@@ -2,3 +2,5 @@
 api/.idea
 frontend/.idea
 provisioning/hosts.yml
+
+api/vendor

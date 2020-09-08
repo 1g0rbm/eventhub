@@ -1,0 +1,23 @@
+{
+  "name": "1g0rbm/eventhub",
+  "type": "project",
+  "authors": [
+    {
+      "name": "1g0rbm",
+      "email": "m1g0rb89@gmail.com"
+    }
+  ],
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
+  },
+  "require": {
+    "php": "^7.4",
+    "php-di/php-di": "^6.2",
+    "slim/psr7": "^1.2",
+    "slim/slim": "^4.5"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  }
+}
