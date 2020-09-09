@@ -28,6 +28,7 @@ services:
             - api-php-fpm
         environment:
             APP_DEBUG: 1
+            APP_ENV: dev
 
     api-php-fpm:
         build:
@@ -44,3 +45,4 @@ services:
             - ./api:/app
         environment:
             APP_DEBUG: 1
+            APP_ENV: dev
