@@ -26,9 +26,6 @@ services:
             - ./api:/app
         depends_on:
             - api-php-fpm
-        environment:
-            APP_DEBUG: 1
-            APP_ENV: dev
 
     api-php-fpm:
         build:
@@ -36,6 +33,10 @@ services:
             dockerfile: development/php-fpm/Dockerfile
         volumes:
             - ./api:/app
+        environment:
+            APP_DEBUG: 1
+            APP_ENV: dev
+            PHP_IDE_CONFIG: serverName=API
 
     api-php-cli:
         build:
