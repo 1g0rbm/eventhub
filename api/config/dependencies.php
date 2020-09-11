@@ -8,7 +8,14 @@ $files = array_merge(
 );
 
 $configs = array_map(
-    static fn(string $file) => require_once $file,
+    static function (string $file): array {
+        /**
+         * @var array
+         * @noinspection   PhpIncludeInspection
+         * @psalm-suppress UnresolvableInclude
+         */
+        return require_once $file;
+    },
     $files
 );
 

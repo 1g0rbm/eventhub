@@ -14,8 +14,8 @@ use function json_encode;
 class JsonResponse extends Response
 {
     /**
-     * @param     $data
-     * @param int $status
+     * @param mixed $data
+     * @param int   $status
      *
      * @throws JsonException
      */
