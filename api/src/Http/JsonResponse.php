@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Http;
 
 use JsonException;
 use Slim\Psr7\Factory\StreamFactory;

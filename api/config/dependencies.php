@@ -14,7 +14,7 @@ $configs = array_map(
          * @noinspection   PhpIncludeInspection
          * @psalm-suppress UnresolvableInclude
          */
-        return require_once $file;
+        return require $file;
     },
     $files
 );

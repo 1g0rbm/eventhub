@@ -1,6 +1,17 @@
+###> COMMON ###
 .idea
-api/.idea
-frontend/.idea
-provisioning/hosts.yml
+###< COMMON ###
 
+###> FRONTEND ###
+frontend/.idea
+###< FRONTEND ###
+
+###> PROVISIONONG ###
+provisioning/hosts.yml
+###< PROVISIONING ###
+
+###> API ###
+api/.idea
 api/vendor
+api/var
+###< API ###

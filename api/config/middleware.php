@@ -8,5 +8,9 @@ use DI\Container;
 return static function (App $app, Container $container) {
     /** @psalm-var array{debug:bool} */
     $config = $container->get('config');
-    $app->addErrorMiddleware($config['debug'], true, true);
+    $app->addErrorMiddleware(
+        $config['debug'],
+        $config['env'] !== 'test',
+        true
+    );
 };
