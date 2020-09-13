@@ -8,9 +8,6 @@ use App\Http\Action\HomeAction;
 
 class HomeTest extends WebTestCase
 {
-    /**
-     * @covers HomeAction::handle
-     */
     public function testMethodPostReturnStatus405(): void
     {
         $response = $this->app()->handle(self::json('POST', '/'));
@@ -18,9 +15,6 @@ class HomeTest extends WebTestCase
         $this->assertEquals(405, $response->getStatusCode());
     }
 
-    /**
-     * @covers HomeAction::handle
-     */
     public function testSuccess(): void
     {
         $response = $this->app()->handle(self::json('GET', '/'));

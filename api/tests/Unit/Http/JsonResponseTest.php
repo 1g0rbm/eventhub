@@ -13,8 +13,6 @@ class JsonResponseTest extends TestCase
 {
     /**
      * @dataProvider getCases
-     * @covers       JsonResponse::getBody
-     * @covers       JsonResponse::getStatusCode
      *
      * @param mixed $source
      * @param mixed $expect
@@ -35,10 +33,10 @@ class JsonResponseTest extends TestCase
      */
     public function getCases(): array
     {
-        $object        = new stdClass();
+        $object         = new stdClass();
         $object->string = 'string';
-        $object->int   = 22;
-        $object->null  = null;
+        $object->int    = 22;
+        $object->null   = null;
 
         $arr = [
             'string' => 'string',
