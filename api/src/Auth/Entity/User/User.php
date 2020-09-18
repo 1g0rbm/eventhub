@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Entity\User;
 
 use DateTimeImmutable;
+use DomainException;
 
 class User
 {
@@ -18,18 +19,33 @@ class User
 
     private ?Token $joinConfirmToken;
 
+    private Status $status;
+
     public function __construct(
         Id $id,
         DateTimeImmutable $timestamp,
         Email $email,
         string $passwordHash,
-        ?Token $joinConfirmToken
+        ?Token $joinConfirmToken = null
     ) {
         $this->id               = $id;
         $this->timestamp        = $timestamp;
         $this->email            = $email;
         $this->hash             = $passwordHash;
         $this->joinConfirmToken = $joinConfirmToken;
+        $this->status           = Status::wait();
+    }
+
+    public function confirmJoin(string $token, DateTimeImmutable $date): void
+    {
+        if ($this->joinConfirmToken === null) {
+            throw new DomainException('confirmation_not_required');
+        }
+
+        $this->joinConfirmToken->validate($token, $date);
+
+        $this->status           = Status::active();
+        $this->joinConfirmToken = null;
     }
 
     public function getId(): Id
@@ -55,5 +71,15 @@ class User
     public function getJoinConfirmToken(): ?Token
     {
         return $this->joinConfirmToken;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status->isWait();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status->isActive();
     }
 }
