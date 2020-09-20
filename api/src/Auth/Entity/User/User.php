@@ -23,7 +23,7 @@ class User
     private Status $status;
 
     /**
-     * @var ArrayObject|NetworkIdentity[]
+     * @var ArrayObject
      */
     private ArrayObject $networks;
 
@@ -93,7 +93,7 @@ class User
         return $this->email;
     }
 
-    public function getPasswordHash(): string
+    public function getPasswordHash(): ?string
     {
         return $this->hash;
     }
@@ -122,7 +122,10 @@ class User
      */
     public function getNetworks(): array
     {
-        return $this->networks->getArrayCopy();
+        /** @var NetworkIdentity[] $networks */
+        $networks = $this->networks->getArrayCopy();
+
+        return $networks;
     }
 
     public function isWait(): bool
