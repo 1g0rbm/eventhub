@@ -7,6 +7,7 @@ namespace App\Auth\Entity\User;
 use DateTimeImmutable;
 use DomainException;
 use Webmozart\Assert\Assert;
+
 use function mb_strtolower;
 
 class Token
