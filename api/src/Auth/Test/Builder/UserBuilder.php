@@ -45,9 +45,9 @@ class UserBuilder
         return $clone;
     }
 
-    public function build(): User
+    public function buildJoinByEmail(): User
     {
-        $user = new User(
+        $user = User::requestJoinByEmail(
             $this->id,
             $this->timestamp,
             $this->email,

@@ -20,7 +20,7 @@ class ConfirmTest extends TestCase
     {
         $user = (new UserBuilder())
             ->withJoinConfirmationToken($token = $this->createToken())
-            ->build();
+            ->buildJoinByEmail();
 
         self::assertEquals($user->getJoinConfirmToken(), $token);
         self::assertFalse($user->isActive());
@@ -35,7 +35,7 @@ class ConfirmTest extends TestCase
     {
         $user = (new UserBuilder())
             ->withJoinConfirmationToken($token = $this->createToken())
-            ->build();
+            ->buildJoinByEmail();
 
         $this->expectExceptionMessage('expired_confirmation_token');
 
@@ -46,7 +46,7 @@ class ConfirmTest extends TestCase
     {
         $user = (new UserBuilder())
             ->withJoinConfirmationToken($token = $this->createToken())
-            ->build();
+            ->buildJoinByEmail();
 
         $this->expectExceptionMessage('invalid_confirmation_token');
 
@@ -58,7 +58,7 @@ class ConfirmTest extends TestCase
         $user = (new UserBuilder())
             ->withJoinConfirmationToken($token = $this->createToken())
             ->active()
-            ->build();
+            ->buildJoinByEmail();
 
         $this->expectExceptionMessage('confirmation_not_required');
 
