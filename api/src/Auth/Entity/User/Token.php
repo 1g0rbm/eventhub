@@ -34,6 +34,11 @@ class Token
         }
     }
 
+    public function isExpiresTo(DateTimeImmutable $date): bool
+    {
+        return $this->expires <= $date;
+    }
+
     public function getValue(): string
     {
         return $this->value;

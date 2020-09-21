@@ -20,6 +20,8 @@ class User
 
     private ?Token $joinConfirmToken = null;
 
+    private ?Token $passwordResetToken = null;
+
     private Status $status;
 
     /**
@@ -66,6 +68,30 @@ class User
         return $user;
     }
 
+    public function resetPassword(string $token, DateTimeImmutable $date, string $hash): void
+    {
+        if ($this->passwordResetToken === null) {
+            throw new DomainException('resetting_not_requested');
+        }
+
+        $this->passwordResetToken->validate($token, $date);
+        $this->passwordResetToken = null;
+        $this->hash               = $hash;
+    }
+
+    public function requestPasswordReset(Token $token, DateTimeImmutable $date): void
+    {
+        if (!$this->isActive()) {
+            throw new DomainException('user_not_active');
+        }
+
+        if ($this->passwordResetToken !== null && !$this->passwordResetToken->isExpiresTo($date)) {
+            throw new DomainException('reset_already_requested');
+        }
+
+        $this->passwordResetToken = $token;
+    }
+
     public function confirmJoin(string $token, DateTimeImmutable $date): void
     {
         if ($this->joinConfirmToken === null) {
@@ -101,6 +127,11 @@ class User
     public function getJoinConfirmToken(): ?Token
     {
         return $this->joinConfirmToken;
+    }
+
+    public function getPasswordResetToken(): ?Token
+    {
+        return $this->passwordResetToken;
     }
 
     public function attachNetwork(NetworkIdentity $networkIdentity): void
