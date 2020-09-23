@@ -14,7 +14,7 @@ class AttacheNetworkTest extends TestCase
     {
         $user = (new UserBuilder())
             ->active()
-            ->buildJoinByEmail();
+            ->build();
 
         $network = new NetworkIdentity('vk', 'vk-1');
         $user->attachNetwork($network);
@@ -27,7 +27,7 @@ class AttacheNetworkTest extends TestCase
     {
         $user = (new UserBuilder())
             ->active()
-            ->buildJoinByEmail();
+            ->build();
 
         $network = new NetworkIdentity('vk', 'vk-1');
         $user->attachNetwork($network);

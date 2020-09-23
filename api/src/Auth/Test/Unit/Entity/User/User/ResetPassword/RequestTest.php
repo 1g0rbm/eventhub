@@ -14,7 +14,7 @@ class RequestTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -27,7 +27,7 @@ class RequestTest extends TestCase
 
     public function testAlreadyRequested(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -41,7 +41,7 @@ class RequestTest extends TestCase
 
     public function testUserNotActive(): void
     {
-        $user = (new UserBuilder())->buildJoinByEmail();
+        $user = (new UserBuilder())->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -53,7 +53,7 @@ class RequestTest extends TestCase
 
     public function testExpired(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));

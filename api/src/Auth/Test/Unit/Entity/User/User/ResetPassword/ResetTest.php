@@ -14,7 +14,7 @@ class ResetTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -31,7 +31,7 @@ class ResetTest extends TestCase
 
     public function testResetNotRequested(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -45,7 +45,7 @@ class ResetTest extends TestCase
 
     public function testTokenNotValid(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -61,7 +61,7 @@ class ResetTest extends TestCase
 
     public function testTokenExpired(): void
     {
-        $user = (new UserBuilder())->active()->buildJoinByEmail();
+        $user = (new UserBuilder())->active()->build();
 
         $now   = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
