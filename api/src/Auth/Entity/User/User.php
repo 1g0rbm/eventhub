@@ -73,6 +73,20 @@ class User
         return $user;
     }
 
+    public function confirmEmailChanging(Token $token, DateTimeImmutable $date)
+    {
+        $email = $this->newEmail;
+        if ($email === null || $this->newEmailToken === null) {
+            throw new DomainException('changing_not_requested');
+        }
+
+        $this->newEmailToken->validate($token->getValue(), $date);
+
+        $this->email         = $email;
+        $this->newEmail      = null;
+        $this->newEmailToken = null;
+    }
+
     public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
     {
         if (!$this->isActive()) {
