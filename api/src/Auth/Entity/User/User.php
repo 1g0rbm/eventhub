@@ -29,6 +29,8 @@ class User
 
     private Status $status;
 
+    private Role $role;
+
     /**
      * @var ArrayObject
      */
@@ -45,6 +47,7 @@ class User
         $this->email     = $email;
         $this->status    = $status;
         $this->networks  = new ArrayObject();
+        $this->role      = Role::user();
     }
 
     public static function requestJoinByNetwork(
@@ -73,7 +76,7 @@ class User
         return $user;
     }
 
-    public function confirmEmailChanging(Token $token, DateTimeImmutable $date)
+    public function confirmEmailChanging(Token $token, DateTimeImmutable $date): void
     {
         $email = $this->newEmail;
         if ($email === null || $this->newEmailToken === null) {
@@ -154,6 +157,11 @@ class User
         $this->joinConfirmToken = null;
     }
 
+    public function changeRole(Role $role): void
+    {
+        $this->role = $role;
+    }
+
     public function getId(): Id
     {
         return $this->id;
@@ -217,6 +225,11 @@ class User
     public function getNewEmailToken(): ?Token
     {
         return $this->newEmailToken;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
     }
 
     public function isWait(): bool

@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Command\ChangeEmail\Confirm;
+namespace App\Auth\Command\ChangeRole;
 
-use App\Auth\Entity\User\Token;
+use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\UserRepository;
 use App\Flusher;
-use DateTimeImmutable;
-use DomainException;
 
 class Handler
 {
@@ -24,13 +23,9 @@ class Handler
 
     public function handle(Command $command): void
     {
-        $user = $this->userRepository->findByNewEmailToken($command->token);
-        if ($user === null) {
-            throw new DomainException('token_not_found');
-        }
+        $user = $this->userRepository->getById(new Id($command->id));
 
-        $date = new DateTimeImmutable();
-        $user->confirmEmailChanging(new Token($command->token, $date), $date);
+        $user->changeRole(new Role($command->role));
 
         $this->flusher->flush();
     }
