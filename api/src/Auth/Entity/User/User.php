@@ -17,11 +17,15 @@ class User
 
     private Email $email;
 
+    private ?Email $newEmail = null;
+
     private ?string $hash = null;
 
     private ?Token $joinConfirmToken = null;
 
     private ?Token $passwordResetToken = null;
+
+    private ?Token $newEmailToken = null;
 
     private Status $status;
 
@@ -67,6 +71,24 @@ class User
         $user->hash             = $passwordHash;
 
         return $user;
+    }
+
+    public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
+    {
+        if (!$this->isActive()) {
+            throw new DomainException('user_not_active');
+        }
+
+        if ($this->email->isEqualsTo($email)) {
+            throw new DomainException('email_the_same');
+        }
+
+        if ($this->newEmailToken !== null && !$this->newEmailToken->isExpiresTo($date)) {
+            throw new DomainException('changing_already_requested');
+        }
+
+        $this->newEmailToken = $token;
+        $this->newEmail      = $email;
     }
 
     public function changePassword(string $current, string $new, PasswordHasher $passwordHasher): void
@@ -171,6 +193,16 @@ class User
         $networks = $this->networks->getArrayCopy();
 
         return $networks;
+    }
+
+    public function getNewEmail(): ?Email
+    {
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?Token
+    {
+        return $this->newEmailToken;
     }
 
     public function isWait(): bool
