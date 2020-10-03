@@ -76,6 +76,13 @@ class User
         return $user;
     }
 
+    public function remove(): void
+    {
+        if (!$this->isWait()) {
+            throw new DomainException('unable_to_remove_active_user');
+        }
+    }
+
     public function confirmEmailChanging(Token $token, DateTimeImmutable $date): void
     {
         $email = $this->newEmail;

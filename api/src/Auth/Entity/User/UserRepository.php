@@ -37,4 +37,6 @@ interface UserRepository
     public function getByEmail(Email $email): User;
 
     public function findByEmail(Email $email): ?User;
+
+    public function remove(User $user): void;
 }
