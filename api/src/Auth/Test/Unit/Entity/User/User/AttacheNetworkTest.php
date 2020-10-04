@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User\User;
 
-use App\Auth\Entity\User\NetworkIdentity;
+use App\Auth\Entity\User\Network;
 use App\Auth\Test\Builder\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ class AttacheNetworkTest extends TestCase
             ->active()
             ->build();
 
-        $network = new NetworkIdentity('vk', 'vk-1');
+        $network = new Network('vk', 'vk-1');
         $user->attachNetwork($network);
 
         self::assertCount(1, $networks = $user->getNetworks());
@@ -29,7 +29,7 @@ class AttacheNetworkTest extends TestCase
             ->active()
             ->build();
 
-        $network = new NetworkIdentity('vk', 'vk-1');
+        $network = new Network('vk', 'vk-1');
         $user->attachNetwork($network);
 
         $this->expectExceptionMessage('network_attached');

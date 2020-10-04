@@ -54,7 +54,7 @@ class User
         Id $id,
         DateTimeImmutable $timestamp,
         Email $email,
-        NetworkIdentity $networkIdentity
+        Network $networkIdentity
     ): self {
         $user = new User($id, $timestamp, $email, Status::active());
         $user->networks->append($networkIdentity);
@@ -199,11 +199,11 @@ class User
         return $this->passwordResetToken;
     }
 
-    public function attachNetwork(NetworkIdentity $networkIdentity): void
+    public function attachNetwork(Network $networkIdentity): void
     {
         $duplicates = array_filter(
             $this->networks->getArrayCopy(),
-            static fn(NetworkIdentity $existedNetwork) => $existedNetwork->isEqualTo($networkIdentity)
+            static fn(Network $existedNetwork) => $existedNetwork->isEqualTo($networkIdentity)
         );
 
         if (count($duplicates) > 0) {
@@ -214,11 +214,11 @@ class User
     }
 
     /**
-     * @return NetworkIdentity[]
+     * @return Network[]
      */
     public function getNetworks(): array
     {
-        /** @var NetworkIdentity[] $networks */
+        /** @var Network[] $networks */
         $networks = $this->networks->getArrayCopy();
 
         return $networks;

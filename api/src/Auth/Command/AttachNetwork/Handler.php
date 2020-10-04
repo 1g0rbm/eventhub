@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Command\AttachNetwork;
 
 use App\Auth\Entity\User\Id;
-use App\Auth\Entity\User\NetworkIdentity;
+use App\Auth\Entity\User\Network;
 use App\Auth\Entity\User\UserRepository;
 use App\Flusher;
 use DomainException;
@@ -24,7 +24,7 @@ class Handler
 
     public function handle(Command $command): void
     {
-        $identity = new NetworkIdentity($command->network, $command->identity);
+        $identity = new Network($command->network, $command->identity);
         if ($this->userRepository->hasByNetworkIdentity($identity)) {
             throw new DomainException('user_with_network_exist');
         }
