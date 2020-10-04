@@ -29,18 +29,26 @@ services:
         environment:
             APP_DEBUG: 0
             APP_ENV: prod
+            DB_HOST: api-postgres
+            DB_USER: app
+            DB_PASSWORD: ${API_DB_PASSWORD}
+            DB_NAME: app
 
     api-php-cli:
         image: ${REGISTRY}/eventhub-api-php-cli:${IMAGE_TAG}
         environment:
             APP_DEBUG: 0
             APP_ENV: prod
+            DB_HOST: api-postgres
+            DB_USER: app
+            DB_PASSWORD: ${API_DB_PASSWORD}
+            DB_NAME: app
 
     api-postgres:
         image: postgres:12.2-alpine
         environment:
             POSTGRES_USER: app
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_PASSWORD: ${API_DB_PASSWORD}
             POSTGRES_DB: app
         volumes:
             - api-postgres:/var/lib/postgresql/data
