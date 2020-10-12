@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Auth\Entity\User\IdType;
 use DI\Container;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
@@ -14,7 +16,7 @@ return [
     EntityManagerInterface::class => function (Container $container): EntityManagerInterface {
         /**
          * @psalm-suppress MixedArrayAccess
-         * @psalm-var array{
+         * @psalm-var      array{
          *     metadata_dirs:array,
          *     dev_mode:bool,
          *     proxy_dir:string,
@@ -36,6 +38,12 @@ return [
 
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
+        foreach ($settings['types'] as $name => $class) {
+            if (!Type::hasType($name)) {
+                Type::addType($name, $class);
+            }
+        }
+
         return EntityManager::create($settings['connection'], $config);
     },
     'config' => [
@@ -51,7 +59,12 @@ return [
                 'dbname' => getenv('DB_NAME'),
                 'charset' => 'utf-8',
             ],
-            'metadata_dirs' => [],
+            'metadata_dirs' => [
+                __DIR__ . '/../../src/Auth/Entity'
+            ],
+            'types' => [
+                IdType::NAME => IdType::class,
+            ],
         ],
     ],
 ];
