@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Auth\Entity\User\EmailType;
 use App\Auth\Entity\User\IdType;
+use App\Auth\Entity\User\RoleType;
+use App\Auth\Entity\User\StatusType;
 use DI\Container;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\FilesystemCache;
@@ -60,10 +63,13 @@ return [
                 'charset' => 'utf-8',
             ],
             'metadata_dirs' => [
-                __DIR__ . '/../../src/Auth/Entity'
+                __DIR__ . '/../../src/Auth/Entity',
             ],
             'types' => [
                 IdType::NAME => IdType::class,
+                EmailType::NAME => EmailType::class,
+                RoleType::NAME => RoleType::class,
+                StatusType::NAME => StatusType::class,
             ],
         ],
     ],

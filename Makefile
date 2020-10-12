@@ -52,7 +52,7 @@ api-test-unit:
 	docker-compose run --rm api-php-cli composer test -- --testsuite=unit
 
 api-test-unit-coverage:
-		docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=unit
+	docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=unit
 
 api-test-functional:
 	docker-compose run --rm api-php-cli composer test -- --testsuite=functional

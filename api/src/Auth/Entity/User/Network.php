@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
 use function mb_strtolower;
 
 /**
- * @ORM\Embedded
+ * @ORM\Embeddable
  */
 class Network
 {

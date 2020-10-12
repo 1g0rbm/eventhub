@@ -70,7 +70,7 @@ class User
     private Role $role;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserNetwork", mappedBy="user", cascade={all}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="UserNetwork", mappedBy="user", cascade={"all"}, orphanRemoval=true)
      */
     private Collection $networks;
 
