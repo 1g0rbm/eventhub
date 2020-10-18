@@ -2,9 +2,10 @@ init: docker-down-clear api-clear docker-pull docker-build docker-up api-init
 up: docker-up
 down: docker-down
 restart: down up
-check: lint analyze test
+check: lint analyze validate-schema test
 lint: api-lint
 analyze: api-analyze
+validate-schema: api-validate-schema
 test: api-test
 test-coverage: api-test-coverage
 test-unit: api-test-unit
@@ -24,7 +25,7 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
-api-init: api-composer-install api-permissions
+api-init: api-permissions api-composer-install api-wait-for-db api-magrate
 
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/*'
@@ -38,6 +39,15 @@ api-composer-install:
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
 	docker-compose run --rm api-php-cli composer cs-check
+
+api-wait-for-db:
+	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
+
+api-magrate:
+	docker-compose run --rm api-php-cli composer cli migrations:migrate
+
+api-validate-schema:
+	docker-compose run --rm api-php-cli composer cli orm:validate-schema
 
 api-analyze:
 	docker-compose run --rm api-php-cli composer psalm
@@ -98,6 +108,9 @@ deploy:
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "REGISTRY=${REGISTRY}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "IMAGE_TAG=${IMAGE_TAG}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose pull'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build -d api-postgres'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 60'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run --rm api-php-cli php bin/cli.php migrations:migrate --no-interaction'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build --remove-orphans -d'
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'

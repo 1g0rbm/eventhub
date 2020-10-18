@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 use DI\Container;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -26,8 +25,6 @@ $commands = $container->get('config')['console']['commands'];
 /** @var EntityManagerInterface $em */
 $em = $container->get(EntityManagerInterface::class);
 $cli->getHelperSet()->set(new EntityManagerHelper($em), 'em');
-
-ConsoleRunner::addCommands($cli);
 
 foreach ($commands as $name) {
     /** @var Command $command */

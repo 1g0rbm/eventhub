@@ -9,6 +9,8 @@ use App\Auth\Entity\User\StatusType;
 use DI\Container;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\EventManager;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,13 +49,26 @@ return [
             }
         }
 
-        return EntityManager::create($settings['connection'], $config);
+        $eventManager = new EventManager();
+
+        foreach ($settings['subscribers'] as $name) {
+            /** @var EventSubscriber $subscriber */
+            $subscriber = $container->get($name);
+            $eventManager->addEventSubscriber($subscriber);
+        }
+
+        return EntityManager::create(
+            $settings['connection'],
+            $config,
+            $eventManager
+        );
     },
     'config' => [
         'doctrine' => [
             'dev_mode' => false,
             'cache_dir' => __DIR__ . '/../../var/cache/doctrine/cache',
             'proxy_dir' => __DIR__ . '/../../var/cache/doctrine/proxy',
+            'subscribers' => [],
             'connection' => [
                 'driver' => 'pdo_pgsql',
                 'host' => getenv('DB_HOST'),
