@@ -25,7 +25,7 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
-api-init: api-permissions api-composer-install api-wait-for-db api-magrate
+api-init: api-permissions api-composer-install api-wait-for-db api-magrate api-fixtures
 
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/*'
@@ -45,6 +45,9 @@ api-wait-for-db:
 
 api-magrate:
 	docker-compose run --rm api-php-cli composer cli migrations:migrate
+
+api-fixtures:
+	docker-compose run --rm api-php-cli composer cli fixtures:load
 
 api-validate-schema:
 	docker-compose run --rm api-php-cli composer cli orm:validate-schema
