@@ -47,7 +47,7 @@ services:
             MAILER_USER: app
             MAILER_PASSWORD: secret
             MAILER_ENCRIPTION: tcp
-            MAILER_FROM_EMAOL: mail@app.test
+            MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://localhost:8080
 
     api-php-cli:
@@ -68,7 +68,7 @@ services:
             MAILER_USER: app
             MAILER_PASSWORD: secret
             MAILER_ENCRIPTION: tcp
-            MAILER_FROM_EMAOL: mail@app.test
+            MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://localhost:8080
 
     api-postgres:

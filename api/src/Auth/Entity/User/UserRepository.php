@@ -6,8 +6,6 @@ namespace App\Auth\Entity\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use DomainException;
 
 class UserRepository
@@ -16,11 +14,8 @@ class UserRepository
 
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, EntityRepository $repo)
     {
-        /** @var EntityRepository $repo */
-        $repo = $em->getRepository(User::class);
-
         $this->repo = $repo;
         $this->em   = $em;
     }
@@ -94,8 +89,6 @@ class UserRepository
      * @param Email $email
      *
      * @return bool
-     * @throws NoResultException
-     * @throws NonUniqueResultException
      */
     public function hasByEmail(Email $email): bool
     {
@@ -116,8 +109,6 @@ class UserRepository
      * @param Network $networkIdentity
      *
      * @return bool
-     * @throws NoResultException
-     * @throws NonUniqueResultException
      */
     public function hasByNetworkIdentity(Network $networkIdentity): bool
     {
