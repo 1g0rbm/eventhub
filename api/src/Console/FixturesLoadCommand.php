@@ -21,6 +21,12 @@ class FixturesLoadCommand extends Command
      */
     private array $paths;
 
+    /**
+     * FixturesLoadCommand constructor.
+     *
+     * @param EntityManagerInterface $em
+     * @param string[]               $paths
+     */
     public function __construct(EntityManagerInterface $em, array $paths)
     {
         parent::__construct();
@@ -45,6 +51,7 @@ class FixturesLoadCommand extends Command
         }
 
         $executor = new ORMExecutor($this->em, new ORMPurger());
+        /** @psalm-suppress MissingClosureReturnType */
         $executor->setLogger(static fn(string $message) => $output->writeln($message));
         $executor->execute($loader->getFixtures());
 

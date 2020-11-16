@@ -43,6 +43,7 @@ return [
 
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
+        /** @var class-string<Type> $class */
         foreach ($settings['types'] as $name => $class) {
             if (!Type::hasType($name)) {
                 Type::addType($name, $class);

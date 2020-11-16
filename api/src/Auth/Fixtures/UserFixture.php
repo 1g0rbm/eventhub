@@ -15,7 +15,8 @@ use Ramsey\Uuid\Uuid;
 
 class UserFixture extends AbstractFixture
 {
-    private const PASSWORD_HASH = '$argon2i$v=19$m=16,t=4,p=1$YnVVQUhIV1Y5dEoxejE2Mg$LT8HlwhWXI4YwVXAUyXO0ki7x1HjmT46Sgw2WQZhFdQ';
+    private const PASSWORD_HASH
+        = '$argon2i$v=19$m=16,t=4,p=1$YnVVQUhIV1Y5dEoxejE2Mg$LT8HlwhWXI4YwVXAUyXO0ki7x1HjmT46Sgw2WQZhFdQ';
 
     public function load(ObjectManager $manager): void
     {

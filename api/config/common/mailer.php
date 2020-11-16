@@ -7,7 +7,17 @@ use Psr\Container\ContainerInterface;
 
 return [
     Swift_Mailer::class => static function (ContainerInterface $container): Swift_Mailer {
-        /** @psalm-suppress MixedArrayAccess */
+        /**
+         * @psalm-suppress MixedArrayAccess
+         * @psalm-var      array{
+         *     user:string,
+         *     password:string,
+         *     encryption:string,
+         *     host:string,
+         *     port:int,
+         *     from:array
+         * } $config
+         */
         $config = $container->get('config')['mailer'];
 
         $transport = (new Swift_SmtpTransport($config['host'], $config['port']))
