@@ -6,6 +6,7 @@ namespace App\Auth\Service;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Token;
+use App\Frontend\FrontendUrlGenerator;
 use RuntimeException;
 use Swift_Mailer;
 use Swift_Message;
@@ -16,9 +17,12 @@ class JoinConfirmationSender
 {
     private Swift_Mailer $mailer;
 
-    public function __construct(Swift_Mailer $mailer)
+    private FrontendUrlGenerator $urlGenerator;
+
+    public function __construct(Swift_Mailer $mailer, FrontendUrlGenerator $urlGenerator)
     {
-        $this->mailer = $mailer;
+        $this->mailer       = $mailer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function send(Email $email, Token $token): void
@@ -26,7 +30,8 @@ class JoinConfirmationSender
         $message = (new Swift_Message('Join Confirmation'))
             ->setTo($email->getValue())
             ->setBody(
-                '/join/confirm?' . http_build_query(
+                $this->urlGenerator->generate(
+                    'join/confirm',
                     [
                         'token' => $token->getValue(),
                     ]

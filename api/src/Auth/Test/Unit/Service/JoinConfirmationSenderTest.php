@@ -7,6 +7,7 @@ namespace App\Auth\Test\Unit\Service;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Token;
 use App\Auth\Service\JoinConfirmationSender;
+use App\Frontend\FrontendUrlGenerator;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -17,9 +18,19 @@ class JoinConfirmationSenderTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $to         = new Email('user@app.test');
-        $token      = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable());
-        $confirmUrl = '/join/confirm?token=' . $token->getValue();
+        $to          = new Email('user@app.test');
+        $token       = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable());
+        $frontendUrl = 'http://test';
+        $confirmUrl  = $frontendUrl . '/join/confirm?token=' . $token->getValue();
+
+        $frontend = $this->createMock(FrontendUrlGenerator::class);
+        $frontend->expects($this->once())
+            ->method('generate')
+            ->with(
+                $this->equalTo('join/confirm'),
+                $this->equalTo(['token' => $token->getValue()])
+            )
+            ->willReturn($confirmUrl);
 
         $mailer = $this->createMock(Swift_Mailer::class);
         $mailer->expects($this->once())
@@ -34,20 +45,25 @@ class JoinConfirmationSenderTest extends TestCase
                 }
             );
 
-        $sender = new JoinConfirmationSender($mailer);
+        $sender = new JoinConfirmationSender($mailer, $frontend);
 
         $sender->send($to, $token);
     }
 
     public function testError(): void
     {
-        $to         = new Email('user@app.test');
-        $token      = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable());
+        $to    = new Email('user@app.test');
+        $token = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable());
+
+        $frontend = $this->createMock(FrontendUrlGenerator::class);
+        $frontend->expects($this->once())
+            ->method('generate')
+            ->willReturn('http://test/join/confirm?token=' . $token->getValue());
 
         $mailer = $this->createStub(Swift_Mailer::class);
         $mailer->method('send')->willReturn(0);
 
-        $sender = new JoinConfirmationSender($mailer);
+        $sender = new JoinConfirmationSender($mailer, $frontend);
 
         $this->expectException(RuntimeException::class);
 
