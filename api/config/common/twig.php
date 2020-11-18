@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Frontend\FrontendUrlTwigExtension;
 use Psr\Container\ContainerInterface;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -23,6 +24,10 @@ return [
 
         $loader = new FilesystemLoader();
 
+        /**
+         * @var string $alias
+         * @var string $dir
+         */
         foreach ($config['template_dirs'] as $alias => $dir) {
             $loader->addPath($dir, $alias);
         }
@@ -41,6 +46,7 @@ return [
             $env->addExtension(new DebugExtension());
         }
 
+        /** @var string $class */
         foreach ($config['extension'] as $class) {
             /** @var ExtensionInterface $ext */
             $ext = $container->get($class);
@@ -56,7 +62,9 @@ return [
                 FilesystemLoader::MAIN_NAMESPACE => __DIR__ . '/../../templates',
             ],
             'cache_dir' => __DIR__ . '/../../var/cache/twig',
-            'extension' => [],
+            'extension' => [
+                FrontendUrlTwigExtension::class,
+            ],
         ],
     ],
 ];
