@@ -9,6 +9,10 @@ http_response_code(500);
 
 require __DIR__ . '/../vendor/autoload.php';
 
+if (getenv('SENTRY_DSN')) {
+    Sentry\init(['dsn' => getenv('SENTRY_DSN')]);
+}
+
 /** @var Container $container */
 $container = require __DIR__ . '/../config/container.php';
 

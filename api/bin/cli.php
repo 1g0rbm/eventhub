@@ -11,10 +11,18 @@ use Symfony\Component\Console\Command\Command;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+if (getenv('SENTRY_DSN')) {
+    Sentry\init(['dsn' => getenv('SENTRY_DSN')]);
+}
+
 /** @var Container $container */
 $container = require __DIR__ . '/../config/container.php';
 
 $cli = new Application('Console');
+
+if (getenv('SENTRY_DSN')) {
+    $cli->setCatchExceptions(false);
+}
 
 /**
  * @var string[] $commands
