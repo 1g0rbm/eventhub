@@ -28,10 +28,10 @@ docker-pull:
 api-init: api-permissions api-composer-install api-wait-for-db api-magrate api-fixtures
 
 api-clear:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/*'
+	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/*'
 
 api-permissions:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
+	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var/cache var/log
 
 api-composer-install:
 	docker-compose run --rm api-php-cli composer install
