@@ -6,6 +6,8 @@ namespace App\Auth\Entity\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use DomainException;
 
 class UserRepository
@@ -89,6 +91,8 @@ class UserRepository
      * @param Email $email
      *
      * @return bool
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function hasByEmail(Email $email): bool
     {
@@ -98,7 +102,7 @@ class UserRepository
                 ->andWhere('u.email = :email')
                 ->setParameters(
                     [
-                        'email' => $email,
+                        'email' => $email->getValue(),
                     ]
                 )
                 ->getQuery()

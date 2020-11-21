@@ -13,7 +13,12 @@ use App\Auth\Service\PasswordHasher;
 use App\Auth\Service\Tokenizer;
 use App\Flusher;
 use DateTimeImmutable;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use DomainException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class Handler
 {
@@ -41,6 +46,15 @@ class Handler
         $this->confirmationSender = $confirmationSender;
     }
 
+    /**
+     * @param Command $command
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function handle(Command $command): void
     {
         $email = new Email($command->email);

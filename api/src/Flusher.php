@@ -17,6 +17,6 @@ class Flusher
 
     public function flush(): void
     {
-        $this->flush();
+        $this->em->flush();
     }
 }
