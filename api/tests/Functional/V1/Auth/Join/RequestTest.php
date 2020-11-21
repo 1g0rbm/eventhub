@@ -10,6 +10,13 @@ use Throwable;
 
 class RequestTest extends WebTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadFixtures([RequestFixture::class]);
+    }
+
     /**
      * @throws Throwable
      */
@@ -50,7 +57,7 @@ class RequestTest extends WebTestCase
                 'POST',
                 '/v1/auth/join',
                 [
-                    'email' => 'user@app.test',
+                    'email' => RequestFixture::EXISTING_EMAIL,
                     'password' => 'new-password',
                 ]
             )
@@ -88,7 +95,7 @@ class RequestTest extends WebTestCase
                 '/v1/auth/join',
                 [
                     'email' => 'not-valid',
-                    'password' => ''
+                    'password' => '',
                 ]
             )
         );

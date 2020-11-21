@@ -7,11 +7,19 @@ namespace App\Http\Action\V1\Auth\Join;
 use App\Auth\Command\JoinByEmail\Request\Command;
 use App\Auth\Command\JoinByEmail\Request\Handler;
 use App\Http\JsonResponse;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use DomainException;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
+use function trim;
 
 class RequestAction implements RequestHandlerInterface
 {
@@ -26,7 +34,12 @@ class RequestAction implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
-     * @throws \JsonException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws JsonException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
