@@ -18,7 +18,6 @@ use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-
 use function trim;
 
 class RequestAction implements RequestHandlerInterface
@@ -44,7 +43,7 @@ class RequestAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @psalm-var array{email:?string, password:?string} $data */
-        $data = json_decode((string)$request->getBody(), true);
+        $data = $request->getParsedBody();
 
         $command           = new Command();
         $command->email    = trim($data['email'] ?? '');
