@@ -19,6 +19,17 @@ use Throwable;
 
 class WebTestCase extends TestCase
 {
+    private ?App $app = null;
+
+    private ?MailerClient $mailer = null;
+
+    protected function tearDown(): void
+    {
+        $this->app = null;
+
+        parent::tearDown();
+    }
+
     /**
      * @param string $method
      * @param string $path
@@ -45,11 +56,21 @@ class WebTestCase extends TestCase
 
     protected function app(): App
     {
-        /** @var Container $container */
-        $container = require __DIR__ . '/../../config/container.php';
+        if ($this->app === null) {
+            /** @var App */
+            $this->app = (require __DIR__ . '/../../config/app.php')($this->container());
+        }
 
-        /** @var App */
-        return (require __DIR__ . '/../../config/app.php')($container);
+        return $this->app;
+    }
+
+    protected function mailer(): MailerClient
+    {
+        if ($this->mailer === null) {
+            $this->mailer = new MailerClient();
+        }
+
+        return $this->mailer;
     }
 
     /**
@@ -72,5 +93,11 @@ class WebTestCase extends TestCase
         $executor = new ORMExecutor($em, new ORMPurger());
 
         $executor->execute($loader->getFixtures());
+    }
+
+    private function container(): Container
+    {
+        /** @var Container $container */
+        return require __DIR__ . '/../../config/container.php';
     }
 }
