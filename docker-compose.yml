@@ -85,5 +85,17 @@ services:
     mailer:
         image: mailhog/mailhog
 
+    adminer:
+        image: adminer
+        depends_on:
+            - api-postgres
+        environment:
+            ADMINER_DEFAULT_DB_DRIVER: pgsql
+            ADMINER_DEFAULT_DB_HOST: api-postgres
+            ADMINER_DEFAULT_DB_NAME: app
+        ports:
+            - 8085:8080
+
+
 volumes:
     api-postgres:
