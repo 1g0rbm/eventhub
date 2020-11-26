@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Action\HomeAction;
+use App\Http\Action\V1\Auth\Join\ConfirmAction;
 use App\Http\Action\V1\Auth\Join\RequestAction;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -16,6 +17,7 @@ return static function (App $app): void {
                 '/auth',
                 function (RouteCollectorProxy $group) {
                     $group->post('/join', RequestAction::class);
+                    $group->post('/join/confirm', ConfirmAction::class);
                 }
             );
         }

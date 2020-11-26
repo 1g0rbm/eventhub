@@ -29,7 +29,7 @@ class Handler
             throw new DomainException('incorrect_token');
         }
 
-        $user;
+        $user->confirmJoin($command->token, new \DateTimeImmutable());
 
         $this->flusher->flush();
     }
