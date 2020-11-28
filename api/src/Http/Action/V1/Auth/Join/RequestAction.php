@@ -14,6 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -24,9 +27,12 @@ class RequestAction implements RequestHandlerInterface
 {
     private Handler $handler;
 
-    public function __construct(Handler $handler)
+    private ValidatorInterface $validator;
+
+    public function __construct(Handler $handler, ValidatorInterface $validator)
     {
-        $this->handler = $handler;
+        $this->handler   = $handler;
+        $this->validator = $validator;
     }
 
     /**
@@ -48,6 +54,17 @@ class RequestAction implements RequestHandlerInterface
         $command           = new Command();
         $command->email    = trim($data['email'] ?? '');
         $command->password = trim($data['password'] ?? '');
+
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            $errors = [];
+            /** @var ConstraintViolationInterface $violation */
+            foreach ($violations as $violation) {
+                $errors[$violation->getPropertyPath()] = $violation->getMessage();
+            }
+
+            return new JsonResponse(['errors' => $errors], 422);
+        }
 
         $this->handler->handle($command);
 

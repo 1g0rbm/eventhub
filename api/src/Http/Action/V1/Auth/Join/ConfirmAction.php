@@ -13,15 +13,20 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
 
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function trim;
 
 class ConfirmAction implements RequestHandlerInterface
 {
     private Handler $handler;
 
-    public function __construct(Handler $handler)
+    private ValidatorInterface $validator;
+
+    public function __construct(Handler $handler, ValidatorInterface $validator)
     {
-        $this->handler = $handler;
+        $this->handler   = $handler;
+        $this->validator = $validator;
     }
 
     /**
@@ -35,8 +40,19 @@ class ConfirmAction implements RequestHandlerInterface
         /** @psalm-var array{token:?string} $data */
         $data = $request->getParsedBody();
 
-        $command           = new Command();
-        $command->token    = trim($data['token'] ?? '');
+        $command        = new Command();
+        $command->token = trim($data['token'] ?? '');
+
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            $errors = [];
+            /** @var ConstraintViolationInterface $violation */
+            foreach ($violations as $violation) {
+                $errors[$violation->getPropertyPath()] = $violation->getMessage();
+            }
+
+            return new JsonResponse(['errors' => $errors], 422);
+        }
 
         $this->handler->handle($command);
 

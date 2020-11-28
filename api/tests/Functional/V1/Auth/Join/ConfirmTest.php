@@ -84,10 +84,10 @@ class ConfirmTest extends WebTestCase
             )
         );
 
-        self::assertEquals(409, $response->getStatusCode());
+        self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
 
-        self::assertEquals(['message' => 'incorrect_token'], Json::decode($body));
+        self::assertEquals(['errors' => ['token' => 'This value should not be blank.']], Json::decode($body));
     }
 
     /**
