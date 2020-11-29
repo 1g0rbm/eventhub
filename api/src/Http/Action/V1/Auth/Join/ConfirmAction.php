@@ -7,23 +7,22 @@ namespace App\Http\Action\V1\Auth\Join;
 use App\Auth\Command\JoinByEmail\Confirm\Command;
 use App\Auth\Command\JoinByEmail\Confirm\Handler;
 use App\Http\JsonResponse;
+use App\Http\Validator\Validator;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
 
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function trim;
 
 class ConfirmAction implements RequestHandlerInterface
 {
     private Handler $handler;
 
-    private ValidatorInterface $validator;
+    private Validator $validator;
 
-    public function __construct(Handler $handler, ValidatorInterface $validator)
+    public function __construct(Handler $handler, Validator $validator)
     {
         $this->handler   = $handler;
         $this->validator = $validator;
@@ -43,16 +42,7 @@ class ConfirmAction implements RequestHandlerInterface
         $command        = new Command();
         $command->token = trim($data['token'] ?? '');
 
-        $violations = $this->validator->validate($command);
-        if ($violations->count() > 0) {
-            $errors = [];
-            /** @var ConstraintViolationInterface $violation */
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = $violation->getMessage();
-            }
-
-            return new JsonResponse(['errors' => $errors], 422);
-        }
+        $this->validator->validate($command);
 
         $this->handler->handle($command);
 
