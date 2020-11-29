@@ -14,8 +14,8 @@ class ValidationException extends LogicException
 
     public function __construct(
         ConstraintViolationListInterface $violation,
-        $message = 'Invalid input.',
-        $code = 0,
+        string $message = 'Invalid input.',
+        int $code = 0,
         Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);

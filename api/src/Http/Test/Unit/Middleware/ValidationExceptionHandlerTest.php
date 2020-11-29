@@ -17,7 +17,7 @@ use function json_decode;
 
 class ValidationExceptionHandlerTest extends TestCase
 {
-    public function testNormal()
+    public function testNormal(): void
     {
         $middleware = new ValidationExceptionHandler();
 
