@@ -113,7 +113,7 @@ class RequestTest extends WebTestCase
                     'password' => '',
                 ]
             )
-        )->withHeader('Accept-Language', 'es;q=0.9, ru;q=0.8, *;q=0.5');
+        );
 
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
@@ -123,6 +123,38 @@ class RequestTest extends WebTestCase
                 'errors' => [
                     'email' => 'This value is not a valid email address.',
                     'password' => 'This value should not be blank.',
+                ],
+            ],
+            Json::decode($body)
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testNotValidLang(): void
+    {
+        $this->markTestIncomplete();
+
+        $response = $this->app()->handle(
+            self::json(
+                'POST',
+                '/v1/auth/join',
+                [
+                    'email' => 'not-valid',
+                    'password' => '',
+                ]
+            )
+        )->withHeader('Accept-Language', 'es;q=0.9, ru;q=0.8, *;q=0.5');
+
+        self::assertEquals(422, $response->getStatusCode());
+        self::assertJson($body = (string)$response->getBody());
+
+        self::assertEquals(
+            [
+                'errors' => [
+                    'email' => 'Значение адреса электронной почты недопустимо.',
+                    'password' => 'Значение не должно быть пустым.',
                 ],
             ],
             Json::decode($body)
