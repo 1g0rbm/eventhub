@@ -134,8 +134,6 @@ class RequestTest extends WebTestCase
      */
     public function testNotValidLang(): void
     {
-        $this->markTestIncomplete();
-
         $response = $this->app()->handle(
             self::json(
                 'POST',
@@ -144,8 +142,8 @@ class RequestTest extends WebTestCase
                     'email' => 'not-valid',
                     'password' => '',
                 ]
-            )
-        )->withHeader('Accept-Language', 'es;q=0.9, ru;q=0.8, *;q=0.5');
+            )->withHeader('Accept-Language', 'es;q=0.9, ru;q=0.8, *;q=0.5')
+        );
 
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
