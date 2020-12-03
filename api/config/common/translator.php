@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\TranslatorLocale;
+use Middlewares\ContentLanguage;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Translation\Loader\PhpFileLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
@@ -33,13 +34,16 @@ return [
         /** @var Translator $translator */
         $translator = $container->get(Translator::class);
 
+        return new TranslatorLocale($translator,);
+    },
+    ContentLanguage::class => static function (ContainerInterface $container): ContentLanguage {
         /**
          * @psalm-suppress MixedArrayAccess
          * @psalm-var      array{allowed:string[]} $config
          */
         $config = $container->get('config')['locales'];
 
-        return new TranslatorLocale($translator, $config['allowed']);
+        return new ContentLanguage($config['allowed']);
     },
     'config' => [
         'translator' => [
