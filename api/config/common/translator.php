@@ -34,7 +34,7 @@ return [
         /** @var Translator $translator */
         $translator = $container->get(Translator::class);
 
-        return new TranslatorLocale($translator,);
+        return new TranslatorLocale($translator);
     },
     ContentLanguage::class => static function (ContainerInterface $container): ContentLanguage {
         /**
@@ -54,6 +54,12 @@ return [
                     __DIR__ . '/../../vendor/symfony/validator/Resources/translations/validators.ru.xlf',
                     'ru',
                     'validators',
+                ],
+                [
+                    'php',
+                    __DIR__ . '/../../translations/exceptions.ru.php',
+                    'ru',
+                    'exceptions',
                 ],
             ],
         ],

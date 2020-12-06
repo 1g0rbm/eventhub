@@ -81,6 +81,33 @@ class RequestTest extends WebTestCase
     /**
      * @throws Throwable
      */
+    public function testExistingLang(): void
+    {
+        $response = $this->app()->handle(
+            self::json(
+                'POST',
+                '/v1/auth/join',
+                [
+                    'email' => RequestFixture::EXISTING_EMAIL,
+                    'password' => 'new-password',
+                ]
+            )->withHeader('Accept-Language', 'ru')
+        );
+
+        self::assertEquals(409, $response->getStatusCode());
+        self::assertJson($body = (string)$response->getBody());
+
+        self::assertEquals(
+            [
+                'message' => 'Пользователь уже существует',
+            ],
+            Json::decode($body)
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testEmpty(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/auth/join', []));
