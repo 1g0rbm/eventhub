@@ -25,6 +25,8 @@ services:
             - ./frontend:/app
         command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn start"
         tty: true
+        environment:
+            CHOKIDAR_USEPOLLING: 1
 
     frontend-node-cli:
         build:
