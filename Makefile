@@ -5,7 +5,7 @@ init: docker-down-clear \
 up: docker-up
 down: docker-down
 restart: down up
-check: lint analyze validate-schema test
+check: lint analyze frontend-lint validate-schema test
 lint: api-lint frontend-lint
 analyze: api-analyze
 validate-schema: api-validate-schema
@@ -94,7 +94,11 @@ frontend-test-watch:
 	docker-compose run --rm frontend-node-cli yarn test
 
 frontend-lint:
-	docker-compose run --rm frontend-node-cli yarn lint
+	docker-compose run --rm frontend-node-cli yarn eslint
+	docker-compose run --rm frontend-node-cli yarn stylelint
+
+frontend-pretty:
+	docker-compose run --rm frontend-node-cli yarn prettier
 
 frontend-lint-fix:
 	docker-compose run --rm frontend-node-cli yarn lint-fix

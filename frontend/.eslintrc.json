@@ -1,14 +1,19 @@
 {
   "env": {
     "browser": true,
-    "es2021": true,
+    "es6": true,
     "node": true,
     "jest": true
   },
   "extends": [
     "plugin:react/recommended",
-    "standard"
+    "standard",
+    "plugin:prettier/recommended"
   ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -17,7 +22,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "prettier"
   ],
   "settings": {
     "react": {
@@ -25,6 +31,6 @@
     }
   },
   "rules": {
-    "space-before-function-paren": "off"
+    "prettier/prettier": "error"
   }
 }
