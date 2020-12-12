@@ -111,6 +111,12 @@ services:
         ports:
             - 8085:8080
 
+    cucumber-node-cli:
+        build:
+            context: cucumber/docker/development/node
+        volumes:
+            - ./cucumber:/app
+
 
 volumes:
     api-postgres:

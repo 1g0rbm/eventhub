@@ -1,7 +1,7 @@
 init: docker-down-clear \
 	api-clear frontend-clear \
 	docker-pull docker-build docker-up \
-	api-init frontend-init
+	api-init frontend-init cucumber-init
 up: docker-up
 down: docker-down
 restart: down up
@@ -10,11 +10,9 @@ lint: api-lint frontend-lint
 analyze: api-analyze
 validate-schema: api-validate-schema
 test: api-test api-fixtures frontend-test
-test-coverage: api-test-coverage
 test-unit: api-test-unit
-test-unit-coverage: api-test-unit-coverage
-test-functional-coverage: api-test-functional api-fixtures
-test-functional-coverage: api-test-functional-coverage api-fixtures
+test-functional: api-test-functional api-fixtures
+test-e2e: api-fixtures cucumber-e2e
 
 docker-up:
 	docker-compose up -d
@@ -102,6 +100,14 @@ frontend-pretty:
 
 frontend-lint-fix:
 	docker-compose run --rm frontend-node-cli yarn lint-fix
+
+cucumber-init: cucumber-assets-install
+
+cucumber-assets-install:
+	docker-compose run --rm cucumber-node-cli yarn install
+
+cucumber-e2e:
+	docker-compose run --rm cucumber-node-cli yarn e2e
 
 docker-build:
 	docker-compose build
