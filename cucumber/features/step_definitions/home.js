@@ -1,12 +1,5 @@
-const {Given, When, Then} = require('cucumber')
+const {When, Then} = require('cucumber')
 const {expect} = require('chai')
-
-Given('I am a guest user', function () {
-});
-
-When('I open homepage', async function () {
-  return await this.page.goto('http://gateway:8080')
-});
 
 Then('I see welcome block', async function () {
   await this.page.waitForSelector('[data-test=welcome]')

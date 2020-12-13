@@ -5,5 +5,5 @@ Feature: View homepage
 
   Scenario: View homepage content
     Given I am a guest user
-    When I open homepage
+    When I open "/" page
     Then I see welcome block
