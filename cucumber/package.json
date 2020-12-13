@@ -6,7 +6,9 @@
     "lint-fix": "eslint --fix --ext .js features"
   },
   "dependencies": {
-    "cucumber": "^6.0.5"
+    "chai": "^4.2.0",
+    "cucumber": "^6.0.5",
+    "puppeteer": "^5.5.0"
   },
   "devDependencies": {
     "eslint": "^7.4.0",
