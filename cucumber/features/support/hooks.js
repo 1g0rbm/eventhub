@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer')
-const {Before, After} = require('cucumber')
+const {Before, After, Status} = require('cucumber')
 
 Before(async function () {
   this.browser = await puppeteer.launch({
@@ -12,6 +12,13 @@ Before(async function () {
   await this.page.setViewport({width: 1280, height: 720})
 })
 
-After(async function () {
+After(async function (testCase) {
+  if (testCase.result.status === Status.FAILED) {
+    const name = testCase.sourceLocation.uri + '-' + testCase.sourceLocation.line
+    const screenshot = await this.page.screenshot({encoding: 'base64', fullPage: true})
+    this.attach(screenshot, 'image/png')
+  }
+
+  await this.page.close()
   await this.browser.close()
 })
