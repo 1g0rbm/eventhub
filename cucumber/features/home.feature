@@ -3,6 +3,7 @@ Feature: View homepage
   As a guest user
   I want to be a able to view homepage
 
+  @smoke
   Scenario: View homepage content
     Given I am a guest user
     When I open "/" page

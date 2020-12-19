@@ -1,6 +1,6 @@
-const {setWorldConstructor} = require('cucumber')
+const { setWorldConstructor } = require('cucumber')
 
-function CustomWorld({attach}) {
+function CustomWorld ({ attach }) {
   this.attach = attach
   this.browser = null
   this.page = null
