@@ -19,8 +19,8 @@ services:
         image: ${REGISTRY}/eventhub-api-php-fpm:${IMAGE_TAG}
         restart: always
         environment:
-            APP_DEBUG: 0
             APP_ENV: prod
+            APP_DEBUG: 0
             DB_HOST: api-postgres
             DB_USER: app
             DB_PASSWORD: secret
@@ -29,7 +29,7 @@ services:
             MAILER_PORT: 1025
             MAILER_USER: app
             MAILER_PASSWORD: secret
-            MAILER_ENCRIPTION: tcp
+            MAILER_ENCRYPTION: tcp
             MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://gateway:8080
             SENTRY_DSN: ""
@@ -37,8 +37,8 @@ services:
     api-php-cli:
         image: ${REGISTRY}/eventhub-api-php-cli:${IMAGE_TAG}
         environment:
-            APP_DEBUG: 0
             APP_ENV: prod
+            APP_DEBUG: 0
             DB_HOST: api-postgres
             DB_USER: app
             DB_PASSWORD: secret
@@ -47,7 +47,7 @@ services:
             MAILER_PORT: 1025
             MAILER_USER: app
             MAILER_PASSWORD: secret
-            MAILER_ENCRIPTION: tcp
+            MAILER_ENCRYPTION: tcp
             MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://gateway:8080
             SENTRY_DSN: ""

@@ -163,9 +163,12 @@ testing-build-cucumber:
 	docker --log-level=debug build --pull --file=cucumber/docker/testing/node/Dockerfile --tag=${REGISTRY}/eventhub-cucumber-node-cli:${IMAGE_TAG} cucumber
 
 testing-init:
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml up --build -d
+	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml up -d
 	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm api-php-cli wait-for-it api-postgres:5432 -t 60
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm api-php-cli php bin/app.php migrations:migrate --no-interaction
+	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm api-php-cli php bin/cli.php migrations:migrate --no-interaction
+
+testing-e2e:
+	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm cucumber-node-cli yarn e2e
 
 testing-down-clear:
 	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml down -v --remove-orphans
@@ -175,6 +178,9 @@ try-testing-build:
 
 try-testing-init:
 	REGISTRY=localhost IMAGE_TAG=0 make testing-init
+
+try-testing-e2e:
+	REGISTRY=localhost IMAGE_TAG=0 make testing-e2e
 
 try-testing-down-clear:
 	REGISTRY=localhost IMAGE_TAG=0 make testing-down-clear
