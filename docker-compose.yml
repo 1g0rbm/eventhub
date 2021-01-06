@@ -64,6 +64,7 @@ services:
             MAILER_ENCRIPTION: tcp
             MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://localhost:8080
+            SENTRY_DSN: ""
 
     api-php-cli:
         build:
@@ -85,6 +86,7 @@ services:
             MAILER_ENCRIPTION: tcp
             MAILER_FROM_EMAIL: mail@app.test
             FRONTEND_URL: http://localhost:8080
+            SENTRY_DSN: ""
 
     api-postgres:
         image: postgres:12.2-alpine
