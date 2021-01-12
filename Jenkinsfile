@@ -3,21 +3,24 @@ pipeline {
     options {
         timestamps()
     }
+    environment {
+        CI='true'
+    }
     stages {
-        stage("One") {
+        stage("init") {
             steps {
-                sh 'sleep 1'
+                sh 'make init'
             }
         }
-                stage("Two") {
+        stage("Down") {
             steps {
-                sh 'sleep 2'
+                sh 'make docker-down-clear'
             }
         }
-        stage("Three") {
-            steps {
-                sh 'sleep 3'
-            }
+    }
+    post {
+        always {
+            sh 'make docker-down-clear || true'
         }
     }
 }
