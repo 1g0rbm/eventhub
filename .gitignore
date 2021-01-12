@@ -13,5 +13,4 @@ provisioning/hosts.yml
 ###> API ###
 api/.idea
 api/vendor
-api/var/*
 ###< API ###
