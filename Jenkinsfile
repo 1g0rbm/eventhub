@@ -7,9 +7,33 @@ pipeline {
         CI='true'
     }
     stages {
-        stage("init") {
+        stage("Init") {
             steps {
                 sh 'make init'
+            }
+        }
+        stage("Valid") {
+            steps {
+                sh "make api-validate-schema"
+            }
+        }
+        stage("Lint") {
+            parallel {
+                stage("API") {
+                    steps {
+                        sh "make api-lint"
+                    }
+                }
+                stage("Frontend") {
+                    steps {
+                        sh "make frontend-lint"
+                    }
+                }
+                stage("Cucumber") {
+                    steps {
+                        sh "make cucumber-lint"
+                    }
+                }
             }
         }
         stage("Down") {
