@@ -1,6 +1,6 @@
 ---
 -   name: Renew certificates
-    hosts: site
+    hosts: swarm-manager
     remote_user: igor
     tasks:
         -   name: Renew certificates
