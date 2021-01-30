@@ -2,18 +2,12 @@ version: "3.7"
 services:
     gateway:
         image: ${REGISTRY}/eventhub-testing-gateway:${IMAGE_TAG}
-        depends_on:
-            - frontend
-            - api
-            - mailer
 
     frontend:
         image: ${REGISTRY}/eventhub-frontend:${IMAGE_TAG}
 
     api:
         image: ${REGISTRY}/eventhub-api:${IMAGE_TAG}
-        depends_on:
-            - api-php-fpm
 
     api-php-fpm:
         image: ${REGISTRY}/eventhub-api-php-fpm:${IMAGE_TAG}
