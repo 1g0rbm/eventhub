@@ -9,18 +9,41 @@ services:
         ports:
             - "80:80"
             - "443:443"
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
+            placement:
+                constraints: [ node.role == manger ]
 
     frontend:
         image: ${REGISTRY}/eventhub-frontend:${IMAGE_TAG}
-        restart: always
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
 
     api:
         image: ${REGISTRY}/eventhub-api:${IMAGE_TAG}
-        restart: always
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
 
     api-php-fpm:
         image: ${REGISTRY}/eventhub-api-php-fpm:${IMAGE_TAG}
-        restart: always
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
         environment:
             APP_DEBUG: 0
             APP_ENV: prod
@@ -37,8 +60,14 @@ services:
             FRONTEND_URL: https://eventhub.1g0rbm.com
             SENTRY_DSN: 'https://5c2750ab20e54b5ea1074f60b8b74159@o479450.ingest.sentry.io/5524360'
 
-    api-php-cli:
+    api-migrations:
         image: ${REGISTRY}/eventhub-api-php-cli:${IMAGE_TAG}
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 5
+                window: 120s
         environment:
             APP_DEBUG: 0
             APP_ENV: prod
@@ -54,9 +83,11 @@ services:
             MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
             FRONTEND_URL: https://eventhub.1g0rbm.com
             SENTRY_DSN: 'https://5c2750ab20e54b5ea1074f60b8b74159@o479450.ingest.sentry.io/5524360'
+        command: sh -c 'wait-for-it api-postgres:5432 -t 60 && php bin/app.php migrations:migrate --no-interaction'
 
     api-postgres:
         image: postgres:12.2-alpine
+        restart: always
         environment:
             POSTGRES_USER: app
             POSTGRES_PASSWORD: ${API_DB_PASSWORD}
@@ -65,6 +96,10 @@ services:
             - api-postgres:/var/lib/postgresql/data
         ports:
             - "54321:5432"
+        deploy:
+            placement:
+                constraints: [ node.role == manger ]
+            endpoint_mode: dnsrr
 
 volumes:
     api-postgres:
