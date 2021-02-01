@@ -16,7 +16,7 @@ services:
                 parallelism: 1
                 delay: 10s
             placement:
-                constraints: [ node.role == manger ]
+                constraints: [ node.role == manager ]
 
     frontend:
         image: ${REGISTRY}/eventhub-frontend:${IMAGE_TAG}
@@ -96,7 +96,7 @@ services:
             - api-postgres:/var/lib/postgresql/data
         deploy:
             placement:
-                constraints: [ node.role == manger ]
+                constraints: [ node.role == manager ]
             endpoint_mode: dnsrr
 
 volumes:
