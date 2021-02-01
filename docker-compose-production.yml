@@ -86,8 +86,7 @@ services:
         command: sh -c 'wait-for-it api-postgres:5432 -t 60 && php bin/app.php migrations:migrate --no-interaction'
 
     api-postgres:
-        image: postgres:13.1-alpine
-        restart: always
+        image: postgres:12.2-alpine
         environment:
             POSTGRES_USER: app
             POSTGRES_PASSWORD: ${API_DB_PASSWORD}
