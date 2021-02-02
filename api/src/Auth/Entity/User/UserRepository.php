@@ -54,12 +54,12 @@ class UserRepository
      */
     public function getById(Id $id): User
     {
+        /** @var User|null $user */
         $user = $this->repo->find($id->getValue());
         if ($user === null) {
             throw new DomainException('user_not_found');
         }
 
-        /** @var User $user */
         return $user;
     }
 

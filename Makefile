@@ -51,6 +51,8 @@ api-magrate:
 api-fixtures:
 	docker-compose run --rm api-php-cli composer cli fixtures:load
 
+api-check: api-validate-schema api-lint api-analyze api-test
+
 api-validate-schema:
 	docker-compose run --rm api-php-cli composer cli orm:validate-schema
 
@@ -209,13 +211,8 @@ deploy:
 
 	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker stack deploy --compose-file docker-compose.yml eventhub --with-registry-auth --prune'
 
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'rm -f site'
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
-
 deploy-clean:
 	rm -f docker-compose-production-env.yml
 
 rollback:
 	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker stack deploy --compose-file docker-compose.yml eventhub --with-registry-auth --prune'
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'rm -f site'
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
