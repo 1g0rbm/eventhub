@@ -9,6 +9,7 @@ use Slim\Handlers\ErrorHandler;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
+ * TODO Remove $logger property annotation
  * @property LoggerInterface $logger
  */
 class LogErrorHandler extends ErrorHandler
