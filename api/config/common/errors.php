@@ -26,7 +26,7 @@ return [
         $middleware = new ErrorMiddleware(
             $callableResolver,
             $responseFactory,
-            (bool)$config['display_details'],
+            $config['display_details'],
             $config['log'],
             true
         );
