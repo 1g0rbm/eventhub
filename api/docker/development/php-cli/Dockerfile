@@ -1,9 +1,14 @@
 FROM php:7.4-cli-alpine
 
-RUN apk update && apk add autoconf g++ make \
-#    && pecl install xdebug \
-    && rm -rf /tmp/pear
-#    && docker-php-ext-enable xdebug
+RUN apk add --no-cache autoconf g++ make \
+    && wget http://xdebug.org/files/xdebug-3.0.2.tgz \
+    && tar -xzvf xdebug-3.0.2.tgz \
+    && cd xdebug-3.0.2 \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && docker-php-ext-enable xdebug
 
 RUN apk add postgresql-dev bash coreutils \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
