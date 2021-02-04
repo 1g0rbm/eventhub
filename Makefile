@@ -94,6 +94,8 @@ frontend-test:
 frontend-test-watch:
 	docker-compose run --rm frontend-node-cli yarn test
 
+frontend-check: frontend-lint frontend-test
+
 frontend-lint:
 	docker-compose run --rm frontend-node-cli yarn eslint
 	docker-compose run --rm frontend-node-cli yarn stylelint
