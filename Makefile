@@ -46,7 +46,7 @@ api-wait-for-db:
 	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
 
 api-magrate:
-	docker-compose run --rm api-php-cli composer cli migrations:migrate
+	docker-compose run --rm api-php-cli composer cli migrations:migrate -- --no-interaction
 
 api-fixtures:
 	docker-compose run --rm api-php-cli composer cli fixtures:load
