@@ -7,15 +7,18 @@
          beStrictAboutTodoAnnotatedTests="true"
          cacheResultFile="var/cache/.phpunit.result.cache"
          verbose="true">
+
     <testsuites>
         <testsuite name="unit">
             <directory>src/Auth/Test/Unit</directory>
             <directory>src/Http/Test/Unit</directory>
+            <directory>src/Frontend/Test/Unit</directory>
         </testsuite>
         <testsuite name="functional">
             <directory>tests/Functional</directory>
         </testsuite>
     </testsuites>
+
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
@@ -23,10 +26,13 @@
         <exclude>
             <directory>src/Auth/Test</directory>
             <directory>src/Http/Test</directory>
+            <directory>src/Frontend/Test</directory>
         </exclude>
     </coverage>
+
     <php>
         <env name="APP_ENV" value="test" force="true"/>
         <env name="APP_DEBUG" value="1" force="true"/>
     </php>
+
 </phpunit>
