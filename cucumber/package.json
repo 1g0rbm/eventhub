@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "cucumber": "^6.0.5",
+    "@cucumber/cucumber": "^7.0.0-rc.0",
     "puppeteer": "^7.0.1"
   },
   "devDependencies": {
