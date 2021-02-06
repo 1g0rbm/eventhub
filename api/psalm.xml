@@ -5,6 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        cacheDirectory="./var/cache/.psalm"
 >
     <projectFiles>
         <directory name="bin"/>
@@ -22,9 +23,9 @@
         <!-- PHPUnit -->
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">
-                <directory name="src/Http/Test" />
-                <directory name="src/Auth/Test" />
-                <directory name="tests" />
+                <directory name="src/Http/Test"/>
+                <directory name="src/Auth/Test"/>
+                <directory name="tests"/>
             </errorLevel>
         </PropertyNotSetInConstructor>
     </issueHandlers>

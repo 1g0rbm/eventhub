@@ -57,6 +57,9 @@ api-validate-schema:
 	docker-compose run --rm api-php-cli composer cli orm:validate-schema
 
 api-analyze:
+	docker-compose run --rm api-php-cli composer psalm -- --no-diff
+
+api-analyze-diff:
 	docker-compose run --rm api-php-cli composer psalm
 
 api-test:
