@@ -16,6 +16,10 @@ class UserRepository
 
     private EntityManagerInterface $em;
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param EntityRepository       $repo
+     */
     public function __construct(EntityManagerInterface $em, EntityRepository $repo)
     {
         $this->repo = $repo;
@@ -113,6 +117,9 @@ class UserRepository
      * @param Network $networkIdentity
      *
      * @return bool
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function hasByNetworkIdentity(Network $networkIdentity): bool
     {

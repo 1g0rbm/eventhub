@@ -27,7 +27,7 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
-api-init: api-permissions api-composer-install api-wait-for-db api-magrate api-fixtures
+api-init: api-permissions api-composer-install api-wait-for-db api-migrate api-fixtures
 
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/*'
@@ -40,12 +40,12 @@ api-composer-install:
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
-	docker-compose run --rm api-php-cli composer cs-check
+	docker-compose run --rm api-php-cli composer phpcs
 
 api-wait-for-db:
 	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
 
-api-magrate:
+api-migrate:
 	docker-compose run --rm api-php-cli composer cli migrations:migrate -- --no-interaction
 
 api-fixtures:

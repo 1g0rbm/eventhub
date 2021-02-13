@@ -38,8 +38,10 @@
   "require-dev": {
     "doctrine/data-fixtures": "^1.4",
     "guzzlehttp/guzzle": "^7.2",
+    "lctrs/psalm-psr-container-plugin": "^1.1",
     "overtrue/phplint": "^2.0",
     "phpunit/phpunit": "^9.3",
+    "psalm/plugin-phpunit": "^0.15.1",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.5",
     "vimeo/psalm": "^4.4"
@@ -56,10 +58,10 @@
   },
   "scripts": {
     "lint": "phplint",
-    "cs-check": "phpcs",
-    "cs-fix": "phpcbf",
+    "phpcs": "phpcs --standard=phpcs.xml",
+    "phpcbf": "phpcbf --standard=phpcs.xml",
+    "psalm": "psalm --config=psalm.xml",
     "cli": "php bin/cli.php --ansi",
-    "psalm": "psalm",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html var/test/coverage"
   }

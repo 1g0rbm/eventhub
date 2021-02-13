@@ -7,6 +7,12 @@
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         cacheDirectory="./var/cache/.psalm"
 >
+
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+        <pluginClass class="Lctrs\PsalmPsrContainerPlugin\Plugin"/>
+    </plugins>
+
     <projectFiles>
         <directory name="bin"/>
         <directory name="config"/>
@@ -20,13 +26,5 @@
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info"/>
-        <!-- PHPUnit -->
-        <PropertyNotSetInConstructor>
-            <errorLevel type="suppress">
-                <directory name="src/Http/Test"/>
-                <directory name="src/Auth/Test"/>
-                <directory name="tests"/>
-            </errorLevel>
-        </PropertyNotSetInConstructor>
     </issueHandlers>
 </psalm>
