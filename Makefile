@@ -14,6 +14,7 @@ test-unit: api-test-unit
 test-functional: api-test-functional api-fixtures
 test-smoke: api-fixtures cucumber-clear cucumber-smoke
 test-e2e: api-fixtures cucumber-clear cucumber-e2e
+update-deps: api-composer-update frontend-yarn-upgrade cucumber-assets-upgrade restart
 
 docker-up:
 	docker-compose up -d
@@ -37,6 +38,9 @@ api-permissions:
 
 api-composer-install:
 	docker-compose run --rm api-php-cli composer install
+
+api-composer-update:
+	docker-compose run --rm api-php-cli composer update
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
@@ -88,6 +92,9 @@ frontend-init: frontend-yarn-install frontend-ready
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
 
+frontend-yarn-upgrade:
+	docker-compose run --rm frontend-node-cli yarn upgrade
+
 frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
 
@@ -116,6 +123,9 @@ cucumber-init: cucumber-assets-install
 
 cucumber-assets-install:
 	docker-compose run --rm cucumber-node-cli yarn install
+
+cucumber-assets-upgrade:
+	docker-compose run --rm cucumber-node-cli yarn upgrade
 
 cucumber-lint:
 	docker-compose run --rm cucumber-node-cli yarn lint
