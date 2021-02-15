@@ -114,7 +114,7 @@ frontend-pretty:
 	docker-compose run --rm frontend-node-cli yarn prettier
 
 frontend-lint-fix:
-	docker-compose run --rm frontend-node-cli yarn lint-fix
+	docker-compose run --rm frontend-node-cli yarn eslint-fix
 
 cucumber-clear:
 	docker run --rm -v ${PWD}/cucumber:/app -w /app alpine sh -c 'rm -rf var/*'
