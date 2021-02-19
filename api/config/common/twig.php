@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\FeatureToggle\FeatureFlagTwigExtension;
 use App\Frontend\FrontendUrlTwigExtension;
 use Psr\Container\ContainerInterface;
 use Twig\Environment;
@@ -64,6 +65,7 @@ return [
             'cache_dir' => __DIR__ . '/../../var/cache/twig',
             'extension' => [
                 FrontendUrlTwigExtension::class,
+                FeatureFlagTwigExtension::class,
             ],
         ],
     ],
