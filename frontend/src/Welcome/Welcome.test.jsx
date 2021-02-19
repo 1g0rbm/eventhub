@@ -1,9 +1,26 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import Welcome from './Welcome'
+import { FeaturesProvider } from '../FeatureToggle'
 
-test('renders app', () => {
-  const { getByText } = render(<Welcome />)
-  const h1Element = getByText(/Eventhub/i)
-  expect(h1Element).toBeInTheDocument()
+test('renders old welcome', () => {
+  const { getByText, queryByText } = render(
+    <FeaturesProvider features={[]}>
+      <Welcome />
+    </FeaturesProvider>
+  )
+
+  expect(getByText(/We will be here soon/i)).toBeInTheDocument()
+  expect(queryByText(/We are here/i)).toBeNull()
+})
+
+test('renders new welcome', () => {
+  const { getByText, queryByText } = render(
+    <FeaturesProvider features={['WE_ARE_HERE']}>
+      <Welcome />
+    </FeaturesProvider>
+  )
+
+  expect(queryByText(/We will be here soon/i)).toBeNull()
+  expect(getByText(/We are here/i)).toBeInTheDocument()
 })

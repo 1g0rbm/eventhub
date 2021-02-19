@@ -1,13 +1,21 @@
 import React from 'react'
 import './App.css'
 import Welcome from '../Welcome'
+import PropTypes from 'prop-types'
+import { FeaturesProvider } from '../FeatureToggle'
 
-function App() {
+function App({ features }) {
   return (
-    <div className="app">
-      <Welcome />
-    </div>
+    <FeaturesProvider features={features}>
+      <div className="app">
+        <Welcome />
+      </div>
+    </FeaturesProvider>
   )
+}
+
+App.propTypes = {
+  features: PropTypes.array.isRequired,
 }
 
 export default App
