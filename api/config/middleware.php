@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\FeatureToggle\FeaturesMiddleware;
 use App\Http\Middleware\ClearEmptyInput;
 use App\Http\Middleware\DomainExceptionHandler;
 use App\Http\Middleware\TranslatorLocale;
@@ -15,6 +16,7 @@ return static function (App $app): void {
     $app->add(ValidationExceptionHandler::class);
     $app->add(ClearEmptyInput::class);
     $app->add(TranslatorLocale::class);
+    $app->add(FeaturesMiddleware::class);
     $app->add(ContentLanguage::class);
     $app->addBodyParsingMiddleware();
     $app->add(ErrorMiddleware::class);

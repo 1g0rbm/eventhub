@@ -25,4 +25,21 @@ class FeaturesTest extends TestCase
         self::assertFalse($features->isEnabled('SECOND'));
         self::assertFalse($features->isEnabled('THIRD'));
     }
+
+    public function testEnabled(): void
+    {
+        $features = new Features(
+            $source = [
+                'FIRST' => false,
+                'SECOND' => false,
+            ]
+        );
+
+        $features->enabled('SECOND');
+        $features->enabled('THIRD');
+
+        self::assertFalse($features->isEnabled('FIRST'));
+        self::assertTrue($features->isEnabled('SECOND'));
+        self::assertTrue($features->isEnabled('THIRD'));
+    }
 }
