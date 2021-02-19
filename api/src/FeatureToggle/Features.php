@@ -32,8 +32,13 @@ class Features implements FeatureFlag, FeatureSwitch
         return $this->features[$name];
     }
 
-    public function enabled(string $name): void
+    public function enable(string $name): void
     {
         $this->features[$name] = true;
+    }
+
+    public function disable(string $name): void
+    {
+        $this->features[$name] = false;
     }
 }

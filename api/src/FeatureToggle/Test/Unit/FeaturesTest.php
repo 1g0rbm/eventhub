@@ -35,8 +35,8 @@ class FeaturesTest extends TestCase
             ]
         );
 
-        $features->enabled('SECOND');
-        $features->enabled('THIRD');
+        $features->enable('SECOND');
+        $features->enable('THIRD');
 
         self::assertFalse($features->isEnabled('FIRST'));
         self::assertTrue($features->isEnabled('SECOND'));

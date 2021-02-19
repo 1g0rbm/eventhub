@@ -27,7 +27,11 @@ class FeaturesMiddleware implements MiddlewareInterface
         $features = array_filter(preg_split('/\s*,\s*/', $header));
 
         foreach ($features as $feature) {
-            $this->features->enabled($feature);
+            if (str_starts_with($feature, '!')) {
+                $this->features->disable(substr($feature, 1));
+            } else {
+                $this->features->enable($feature);
+            }
         }
 
         return $handler->handle($request);
