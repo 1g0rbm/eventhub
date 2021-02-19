@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\FeatureToggle\FeaturesMonologProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
@@ -37,6 +38,9 @@ return [
             'debug' => (bool)getenv('APP_DEBUG'),
             'file' => null,
             'stderr' => true,
+            'processor' => [
+                FeaturesMonologProcessor::class
+            ]
         ],
     ],
 ];
