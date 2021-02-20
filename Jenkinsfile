@@ -7,14 +7,29 @@ pipeline {
         CI = 'true'
         REGISTRY = credentials("REGISTRY")
         IMAGE_TAG = sh(returnStdout: true, script: "echo '${env.BUILD_TAG}' | sed 's/%2F/-/g'").trim()
+        GIT_DIFF_API = sh(
+            returnStdout: true,
+            script: "git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} HEAD -- api"
+        ).trim()
+        GIT_DIFF_FRONTEND = sh(
+            returnStdout: true,
+            script: "git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} HEAD -- frontend"
+        ).trim()
+        GIT_DIFF_CUCUMBER = sh(
+            returnStdout: true,
+            script: "git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} HEAD -- cucumber"
+        ).trim()
     }
     stages {
         stage("Init") {
             steps {
-                sh 'make init'
+                sh 'make init-ci'
             }
         }
         stage("Valid") {
+            when {
+                expression { return env.GIT_DIFF_API }
+            }
             steps {
                 sh "make api-validate-schema"
             }
@@ -22,16 +37,25 @@ pipeline {
         stage("Lint") {
             parallel {
                 stage("API") {
+                    when {
+                        expression { return env.GIT_DIFF_API }
+                    }
                     steps {
                         sh "make api-lint"
                     }
                 }
                 stage("Frontend") {
+                    when {
+                        expression { return env.GIT_DIFF_FRONTEND }
+                    }
                     steps {
                         sh "make frontend-lint"
                     }
                 }
                 stage("Cucumber") {
+                    when {
+                        expression { return env.GIT_DIFF_CUCUMBER }
+                    }
                     steps {
                         sh "make cucumber-lint"
                     }
@@ -39,6 +63,9 @@ pipeline {
             }
         }
         stage("Analyze") {
+            when {
+                expression { return env.GIT_DIFF_API }
+            }
             steps {
                 sh 'make api-analyze'
             }
@@ -46,6 +73,9 @@ pipeline {
         stage("Test") {
             parallel {
                 stage("API") {
+                    when {
+                        expression { return env.GIT_DIFF_API }
+                    }
                     steps {
                         sh "make api-test"
                     }
@@ -56,6 +86,9 @@ pipeline {
                     }
                 }
                 stage("Frontend") {
+                    when {
+                        expression { return env.GIT_DIFF_FRONTEND }
+                    }
                     steps {
                         sh "make frontend-test"
                     }
