@@ -19,6 +19,10 @@ pipeline {
             returnStdout: true,
             script: "git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} HEAD -- cucumber"
         ).trim()
+        GIT_DIFF_ROOT = sh(
+            returnStdout: true,
+            script: "git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} HEAD -- . | { grep -v / - || true; }"
+        ).trim()
     }
     stages {
         stage("Init") {
@@ -28,7 +32,7 @@ pipeline {
         }
         stage("Valid") {
             when {
-                expression { return env.GIT_DIFF_API }
+                expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_API }
             }
             steps {
                 sh "make api-validate-schema"
@@ -38,7 +42,7 @@ pipeline {
             parallel {
                 stage("API") {
                     when {
-                        expression { return env.GIT_DIFF_API }
+                        expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_API }
                     }
                     steps {
                         sh "make api-lint"
@@ -46,7 +50,7 @@ pipeline {
                 }
                 stage("Frontend") {
                     when {
-                        expression { return env.GIT_DIFF_FRONTEND }
+                        expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_FRONTEND }
                     }
                     steps {
                         sh "make frontend-lint"
@@ -54,7 +58,7 @@ pipeline {
                 }
                 stage("Cucumber") {
                     when {
-                        expression { return env.GIT_DIFF_CUCUMBER }
+                        expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_CUCUMBER }
                     }
                     steps {
                         sh "make cucumber-lint"
@@ -64,7 +68,7 @@ pipeline {
         }
         stage("Analyze") {
             when {
-                expression { return env.GIT_DIFF_API }
+                expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_API }
             }
             steps {
                 sh 'make api-analyze'
@@ -74,7 +78,7 @@ pipeline {
             parallel {
                 stage("API") {
                     when {
-                        expression { return env.GIT_DIFF_API }
+                        expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_API }
                     }
                     steps {
                         sh "make api-test"
@@ -87,7 +91,7 @@ pipeline {
                 }
                 stage("Frontend") {
                     when {
-                        expression { return env.GIT_DIFF_FRONTEND }
+                        expression { return env.GIT_DIFF_ROOT || env.GIT_DIFF_FRONTEND }
                     }
                     steps {
                         sh "make frontend-test"
