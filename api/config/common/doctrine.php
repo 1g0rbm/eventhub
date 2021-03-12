@@ -28,7 +28,7 @@ return [
          *     cache_dir:?string,
          *     types:array<string,string>,
          *     subscribers:string[],
-         *     connection:array
+         *     connection:array<string, mixed>
          * } $settings
          */
         $settings = $container->get('config')['doctrine'];
