@@ -1,12 +1,12 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import Welcome from './Welcome'
+import Home from './Home'
 import { FeaturesProvider } from '../FeatureToggle'
 
 test('renders old welcome', () => {
   const { getByText, queryByText } = render(
     <FeaturesProvider features={[]}>
-      <Welcome />
+      <Home />
     </FeaturesProvider>
   )
 
@@ -17,7 +17,7 @@ test('renders old welcome', () => {
 test('renders new welcome', () => {
   const { getByText, queryByText } = render(
     <FeaturesProvider features={['WE_ARE_HERE']}>
-      <Welcome />
+      <Home />
     </FeaturesProvider>
   )
 

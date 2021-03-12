@@ -1,10 +1,10 @@
 import React from 'react'
-import styles from './Welcome.module.css'
+import styles from './Home.module.css'
 import FeatureFlag from '../FeatureToggle'
 
-function Welcome() {
+function Home() {
   return (
-    <div data-test="welcome" className={styles.welcome}>
+    <div className={styles.home}>
       <h1>Eventhub</h1>
       <FeatureFlag name="WE_ARE_HERE">
         <p>We are here</p>
@@ -17,4 +17,4 @@ function Welcome() {
   )
 }
 
-export default Welcome
+export default Home

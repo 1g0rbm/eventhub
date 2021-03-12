@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import Welcome from '../Welcome'
+import Home from '../Home'
 import PropTypes from 'prop-types'
 import { FeaturesProvider } from '../FeatureToggle'
 
@@ -8,7 +8,7 @@ function App({ features }) {
   return (
     <FeaturesProvider features={features}>
       <div className="app">
-        <Welcome />
+        <Home />
       </div>
     </FeaturesProvider>
   )
