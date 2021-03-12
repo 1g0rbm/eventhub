@@ -14,3 +14,7 @@ Then('I do not see {string}', async function (value) {
   const content = await this.page.content()
   expect(content).to.not.include(value)
 })
+
+Then('I see {string} element', async function (id) {
+  await this.page.waitForSelector(`[data-test=${id}]`)
+})
