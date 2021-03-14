@@ -1,9 +1,13 @@
-const { Then, When } = require('@cucumber/cucumber')
+const { Given, Then, When } = require('@cucumber/cucumber')
 const { expect } = require('chai')
 
-When('I open {string} page', { wrapperOptions: { retry: 2 }, timeout: 30000 }, async function (uri) {
-  return await this.page.goto('http://gateway:8080' + uri)
-})
+const open = async function (uri) {
+  await this.page.goto('http://gateway:8080' + uri)
+}
+
+Given('I am on {string} page', { wrapperOptions: { retry: 2 }, timeout: 30000 }, open)
+
+When('I open {string} page', { wrapperOptions: { retry: 2 }, timeout: 30000 }, open)
 
 Then('I see {string}', async function (value) {
   await this.page.waitForFunction(
@@ -20,6 +24,10 @@ Then('I do not see {string}', async function (value) {
 
 Then('I see {string} element', async function (id) {
   await this.page.waitForSelector(`[data-test=${id}]`)
+})
+
+Then('I click {string} element', async function (id) {
+  await this.page.click(`[data-test=${id}]`)
 })
 
 Then('I see {string} header', async function (value) {

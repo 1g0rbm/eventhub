@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { FeaturesProvider } from '../FeatureToggle'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NotFound from '../Error'
+import Join from '../Join'
 
 function App({ features }) {
   return (
@@ -15,6 +16,11 @@ function App({ features }) {
             <Route exact path="/">
               <Home />
             </Route>
+            {features.includes('JOIN_US') ? (
+              <Route exact path="/join">
+                <Join />
+              </Route>
+            ) : null}
             <Route exact path="*">
               <NotFound />
             </Route>

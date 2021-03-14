@@ -2,11 +2,14 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import Home from './Home'
 import { FeaturesProvider } from '../FeatureToggle'
+import { MemoryRouter } from 'react-router-dom'
 
 test('renders old welcome', () => {
   const { getByText, queryByText } = render(
     <FeaturesProvider features={[]}>
-      <Home />
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
     </FeaturesProvider>
   )
 
@@ -16,8 +19,10 @@ test('renders old welcome', () => {
 
 test('renders new welcome', () => {
   const { getByText, queryByText } = render(
-    <FeaturesProvider features={['WE_ARE_HERE']}>
-      <Home />
+    <FeaturesProvider features={['JOIN_US']}>
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
     </FeaturesProvider>
   )
 
